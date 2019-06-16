@@ -1,0 +1,68 @@
+docker_cache_key: &docker_cache_key
+  docker-{{ checksum "docker-compose.yml" }}--{{ checksum "Dockerfile" }}--{{ checksum "composer.lock" }}
+
+version: 2.1
+
+executors:
+  default:
+    machine:
+      enabled: true
+      image: circleci/classic:201808-01
+
+commands:
+  restore_docker:
+    steps:
+      - restore_cache:
+          key: *docker_cache_key
+          paths:
+            - ~/caches/app.tar
+
+  save_docker:
+    steps:
+      - save_cache:
+          key: *docker_cache_key
+          paths:
+            - ~/caches/app.tar
+
+jobs:
+  build:
+    executor: default
+    steps:
+      - checkout
+      - restore_docker
+      - run:
+          name: Setup docker
+          command: |
+            if [[ ! -f ~/caches/app.tar ]]; then
+              docker-compose build test
+              mkdir -p ~/caches
+              docker save $(docker images | awk 'NR>=2 && ! /^<none>/{print $1}') -o ~/caches/app.tar
+            fi
+      - save_docker
+
+  test:
+    executor: default
+    environment:
+      COMPOSE_PROJECT_NAME: youtube_channel_downloder
+      NETWORK_NAME: youtube_channel_downloder_default
+    steps:
+      - checkout
+      - restore_docker
+      - run:
+          name: Load docker
+          command: |
+            if [[ -e ~/caches/app.tar ]]; then
+              docker load -i ~/caches/app.tar
+            fi
+      - run:
+          name: Run Test
+          command: docker-compose run --rm test
+
+workflows:
+  version: 2.1
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build

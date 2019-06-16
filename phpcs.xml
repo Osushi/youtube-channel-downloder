@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset name="YOUTUBE_CHANNEL_DOWNLODER_PSR2">
+    <description>Custom Ruleset Based on PSR2</description>
+    <file>./src</file>
+    <rule ref="PSR2" />
+    <arg name="extensions" value="php" />
+    <arg name="colors" />
+    <arg value="ps" />
+</ruleset>

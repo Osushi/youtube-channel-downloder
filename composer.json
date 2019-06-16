@@ -1,0 +1,83 @@
+{
+    "name": "osushi/youtube-channel-downloder",
+    "type": "project",
+    "description": "Download all channel's video on youtube",
+    "keywords": [
+        "youtube",
+        "video",
+        "channel",
+        "audio"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^7.3.5",
+        "guzzlehttp/guzzle": "~6.3.3",
+        "webmozart/assert": "~1.4.0",
+        "nesbot/carbon": "~2.19.1",
+        "symfony/process": "~v4.3.1"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "mockery/mockery": "^1.0",
+        "phpstan/phpstan": "^0.11.8",
+        "phpmd/phpmd": "^2.6",
+        "phpunit/phpunit": "^7.5",
+        "sensiolabs/security-checker": "^5.0",
+        "squizlabs/php_codesniffer": "^3.4",
+	"symfony/var-dumper": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "composer test-phpstan",
+            "composer test-phpcs",
+            "composer test-phpmd",
+            "composer test-phpcsfixer",
+            "composer test-phpunit",
+            "composer test-security-checker"
+        ],
+	"test-coverage": [
+            "composer test-phpstan",
+            "composer test-phpcs",
+            "composer test-phpmd",
+            "composer test-phpcsfixer",
+            "composer test-phpunit-coverage"
+        ],
+        "test-format": [
+            "composer test-phpstan",
+            "composer test-phpcs",
+            "composer test-phpmd",
+            "composer test-phpcsfixer"
+        ],
+	"test-phpstan": [
+            "./vendor/bin/phpstan analyse --memory-limit=1G --ansi"
+        ],
+        "test-phpcs": [
+            "./vendor/bin/phpcs --colors"
+        ],
+	"test-phpmd": [
+            "./vendor/bin/phpmd ./src text phpmd.xml"
+        ],
+        "test-phpunit": [
+            "./vendor/bin/phpunit"
+        ],
+        "test-phpcsfixer": [
+            "./vendor/bin/php-cs-fixer fix --dry-run --diff --ansi --rules=@PSR2,no_unused_imports src"
+        ],
+        "test-phpunit-coverage": [
+            "./vendor/bin/phpunit --coverage-html ./tmp/test/report"
+        ],
+        "test-security-checker": [
+            "./vendor/bin/security-checker security:check --ansi"
+        ]
+    }
+}

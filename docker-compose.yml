@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  develop: &develop
+    image: osushi/youtube_channel_downloder
+    build:
+      context: .
+    env_file:
+      - envfile
+    volumes:
+      - ./:/var/www/html/youtube-channel-downloder:cached
+      # exclude volumes
+      - /var/www/html/youtube-channel-downloder/vendor
+
+  run:
+    <<: *develop
+    command: php ./src/run.php
+
+  test:
+    <<: *develop
+    command: composer test
