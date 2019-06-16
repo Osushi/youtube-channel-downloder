@@ -24,11 +24,16 @@ commands:
           paths:
             - ~/caches/app.tar
 
+  copy_env:
+    steps:
+      - run: cp envfile.sample envfile
+
 jobs:
   build:
     executor: default
     steps:
       - checkout
+      - copy_env
       - restore_docker
       - run:
           name: Setup docker
@@ -47,6 +52,7 @@ jobs:
       NETWORK_NAME: youtube_channel_downloder_default
     steps:
       - checkout
+      - copy_env
       - restore_docker
       - run:
           name: Load docker
