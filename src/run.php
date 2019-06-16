@@ -48,7 +48,3 @@ $youtubeDl->download(
 
 $logger->stdout('***');
 $logger->stdout('Finished! Please check your "data" directory on app root!');
-
-/* todo: テスト */
-/* todo: docker-compose */
-/* todo: readme */
